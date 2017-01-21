@@ -1,0 +1,9 @@
+C:\Users\Yurij Volkov\Desktop\SysProject\vtc\vtc\bin\Debug\vtc.exe.config
+C:\Users\Yurij Volkov\Desktop\SysProject\vtc\vtc\bin\Debug\vtc.XML
+C:\Users\Yurij Volkov\Desktop\SysProject\vtc\vtc\bin\Debug\vtc.exe
+C:\Users\Yurij Volkov\Desktop\SysProject\vtc\vtc\bin\Debug\vtc.pdb
+C:\Users\Yurij Volkov\Desktop\SysProject\vtc\vtc\bin\Debug\FSharp.Core.dll
+C:\Users\Yurij Volkov\Desktop\SysProject\vtc\vtc\bin\Debug\FSharp.Core.xml
+C:\Users\Yurij Volkov\Desktop\SysProject\vtc\vtc\bin\Debug\ru\FSharp.Core.resources.dll
+C:\Users\Yurij Volkov\Desktop\SysProject\vtc\vtc\obj\Debug\vtc.exe
+C:\Users\Yurij Volkov\Desktop\SysProject\vtc\vtc\obj\Debug\vtc.pdb
