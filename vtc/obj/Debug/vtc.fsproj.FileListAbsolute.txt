@@ -7,3 +7,11 @@ C:\Users\Yurij Volkov\Desktop\SysProject\vtc\vtc\bin\Debug\FSharp.Core.xml
 C:\Users\Yurij Volkov\Desktop\SysProject\vtc\vtc\bin\Debug\ru\FSharp.Core.resources.dll
 C:\Users\Yurij Volkov\Desktop\SysProject\vtc\vtc\obj\Debug\vtc.exe
 C:\Users\Yurij Volkov\Desktop\SysProject\vtc\vtc\obj\Debug\vtc.pdb
+C:\Users\yura2\Source\Repos\vtc\vtc\bin\Debug\vtc.exe.config
+C:\Users\yura2\Source\Repos\vtc\vtc\bin\Debug\vtc.XML
+C:\Users\yura2\Source\Repos\vtc\vtc\bin\Debug\vtc.exe
+C:\Users\yura2\Source\Repos\vtc\vtc\bin\Debug\vtc.pdb
+C:\Users\yura2\Source\Repos\vtc\vtc\bin\Debug\FSharp.Core.dll
+C:\Users\yura2\Source\Repos\vtc\vtc\bin\Debug\ru\FSharp.Core.resources.dll
+C:\Users\yura2\Source\Repos\vtc\vtc\obj\Debug\vtc.exe
+C:\Users\yura2\Source\Repos\vtc\vtc\obj\Debug\vtc.pdb
