@@ -2,5 +2,40 @@
 <doc>
 <assembly><name>vtc</name></assembly>
 <members>
+<member name="M:Parser.parseStatements(Microsoft.FSharp.Collections.FSharpList{Types.TokenTypeEnum},Microsoft.FSharp.Collections.FSharpList{Parser.ASTnode})">
+<summary>
+ statements := statement | statement &quot;;&quot; statements
+</summary>
+</member>
+<member name="M:Parser.parseStatement(Microsoft.FSharp.Collections.FSharpList{Types.TokenTypeEnum})">
+<summary>
+ statement := &quot;{&quot; statements &quot;}&quot; | assignment | if | while | print | &quot;skip&quot;
+ assignment := IDENT &quot;=&quot; expr
+ if := &quot;if&quot; &quot;(&quot; expr &quot;)&quot; statement &quot;else&quot; statement
+ while := &quot;while&quot; &quot;(&quot; expr &quot;)&quot; statement
+ print := &quot;print&quot; &quot;(&quot; expr &quot;)&quot;
+</summary>
+</member>
+<member name="M:Parser.parseAtom(Microsoft.FSharp.Collections.FSharpList{Types.TokenTypeEnum})">
+<summary>
+ atom := &quot;(&quot; expr &quot;)&quot; | NUMBER | IDENT
+</summary>
+</member>
+<member name="M:Parser.parseExpression1(Microsoft.FSharp.Collections.FSharpList{Types.TokenTypeEnum})">
+<summary>
+ expr1 := atom &quot;*&quot; expr1 | atom &quot;/&quot; expr1 | atom
+</summary>
+</member>
+<member name="M:Parser.parseExpression0(Microsoft.FSharp.Collections.FSharpList{Types.TokenTypeEnum})">
+<summary>
+ expr0 = expr1 &quot;+&quot; expr0 | expr1 &quot;-&quot; expr0 | expr1
+</summary>
+</member>
+<member name="M:Parser.parseExpression(Microsoft.FSharp.Collections.FSharpList{Types.TokenTypeEnum})">
+<summary>
+ expr := expr0 &quot;&lt;&quot; expr | expr0 &quot;&lt;=&quot; expr  | expr0 &quot;==&quot; expr  
+ 	| expr0 &quot;&gt;&quot; expr | expr0 &quot;&gt;=&quot; expr | expr0 
+</summary>
+</member>
 </members>
 </doc>

@@ -1,32 +1,30 @@
 ﻿module Types
 
 type TokenTypeEnum = 
+    | Number of int
     | Semicolon
-    | Plus
+    | Plus 
     | Minus
     | Mul
     | Div
-    | Sub
+    | EOF
+    | Lbrace
+    | Rbrace
+    | Lpar
+    | Rpar
+    | Leq
+    | Ls
+    | Geq
+    | Gt
+    | Eq
+    | Assign
     | If
-    | Then
     | Else
     | Skip
     | While
-    | Lpar
-    | Rpar
-    | Lbrace
-    | Rbrace
-    | Lt
-    | Leq
-    | Gt
-    | Geq
-    | Eq
-    | Assign
     | Print
     | Ident of string
-    | Number of int
-    | EOF
-
+    
 
 
 

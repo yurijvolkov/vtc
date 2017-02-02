@@ -9,7 +9,7 @@ let head = function
 let tail = function
     |h::t -> t
 
-let isIdentChar c = (Char.IsLetterOrDigit(c)||c='_')
+let isIdentChar c = (Char.IsLetterOrDigit(c) || c='_')
 let isDigit c = Char.IsDigit c
 let isNumber s = (String.filter (fun c -> isDigit c <> true) s).Length = 0
 
@@ -22,10 +22,12 @@ let rec lexer prog tokens =
     let h = head prog
     match h with
     |' ' | '\t' | '\n' | '\r' -> lexer (tail prog) tokens
-    |'$' ->  TokenTypeEnum.EOF::tokens
     |';' ->  lexer (tail prog) (TokenTypeEnum.Semicolon::tokens)
-    |'-' ->  lexer (tail prog) (TokenTypeEnum.Minus::tokens)
     |'+' ->  lexer (tail prog) (TokenTypeEnum.Plus::tokens)
+    |'-' ->  lexer (tail prog) (TokenTypeEnum.Minus::tokens)
+    |'*' ->  lexer (tail prog) (TokenTypeEnum.Mul::tokens)
+    |'/' ->  lexer (tail prog) (TokenTypeEnum.Div::tokens)
+    |'$' ->  TokenTypeEnum.EOF::tokens
     |'(' ->  lexer (tail prog) (TokenTypeEnum.Lpar::tokens)
     |')' ->  lexer (tail prog) (TokenTypeEnum.Rpar::tokens)
     |'{' ->  lexer (tail prog) (TokenTypeEnum.Lbrace::tokens)
@@ -33,7 +35,7 @@ let rec lexer prog tokens =
     |'<' ->
         match prog.[1] with
             |'=' -> lexer (tail prog) (TokenTypeEnum.Leq::tokens)
-            | _ -> lexer (tail prog) (TokenTypeEnum.Lt::tokens)
+            | _ -> lexer (tail prog) (TokenTypeEnum.Ls::tokens)
     |'>' ->
         match prog.[1] with
             |'=' -> lexer (tail prog) (TokenTypeEnum.Geq::tokens)
