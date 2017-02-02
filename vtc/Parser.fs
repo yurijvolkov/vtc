@@ -68,7 +68,7 @@ and parseExpression1 lexems =
 /// atom := "(" expr ")" | NUMBER | IDENT
 and parseAtom lexems =
     match lexems with
-    |Types.Lbrace::t -> 
+    |Types.Lpar::t -> 
         let (node, othrs) = parseExpression t
         (node, tail othrs)
     |Types.Number num::t->
@@ -86,31 +86,31 @@ let rec parseStatement lexems =
         |Types.Lbrace::t -> 
             let  (seq, othrs) = parseStatements t []
             (ASTnode.Sequence seq, tail othrs)
-        |(Types.Ident s)::t ->
+        |(TokenTypeEnum.Ident s)::t ->
             let ident = ASTnode.Ident s
             let (value, othrs) = parseExpression (tail t)
             ASTnode.Assignment  (ident, value), othrs
         |Types.If::t ->
             let (condition, othrs) = parseAtom t
-            let (t_stmnt, othrs) = parseStatement (tail othrs)
-            let (f_stmnt, othrs) = parseStatement (tail othrs)
-            ASTnode.If(condition, t_stmnt, f_stmnt), othrs
+            let (t_stmnt, othrs) = parseStatement (tail othrs) 
+            let (f_stmnt, othrs) = parseStatement (tail (tail othrs)) 
+            ASTnode.If(condition,  t_stmnt,  f_stmnt), tail othrs
         |Types.While::t ->
             let (condition, othrs) = parseAtom t
-            let (body, othrs) = parseStatement othrs
-            ASTnode.While(condition, body), othrs
+            let (body, othrs) = parseStatement othrs 
+            ASTnode.While(condition,  body), othrs
         |Types.Print::t ->
             let (value, othrs) = parseAtom t
             ASTnode.Print(value), othrs
         |Types.Skip::t ->
             ASTnode.Skip, t
-        
 
 /// statements := statement | statement ";" statements
 and parseStatements lexems stmts = 
     let (next, others) = parseStatement lexems 
-    match head others with
-    |TokenTypeEnum.Semicolon -> (parseStatements (tail others) (next::stmts))
+    match others with
+    |TokenTypeEnum.Semicolon::TokenTypeEnum.EOF::_ -> (next::stmts, others)
+    |TokenTypeEnum.Semicolon::t -> (parseStatements t (next::stmts))
     |_ -> (next::stmts, others)
 
 
