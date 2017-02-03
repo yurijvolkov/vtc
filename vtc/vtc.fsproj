@@ -60,8 +60,9 @@
     <Compile Include="Types.fs" />
     <Compile Include="Lexer.fs" />
     <Compile Include="Parser.fs" />
-    <Compile Include="VTc.fs" />
     <Content Include="Grammar.txt" />
+    <Compile Include="Printer.fs" />
+    <Compile Include="VTc.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />

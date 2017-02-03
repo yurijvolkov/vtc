@@ -1,11 +1,13 @@
-﻿open System
+﻿module vt
+
+open System
 open Lexer
 open Types
 open Parser
 
 let program = @"
 n=10;
-x=x+y;
+x=y*(x+y*2);
 x= 1;
 while (n> 0 ) {
     y = y + x;
@@ -17,9 +19,13 @@ while (n> 0 ) {
 "
 
 
-
 [<EntryPoint>]
 let main argv = 
+    let dict = new Collections.Generic.Dictionary<string, int>()
+    dict.["a"] <- 1
+    dict.["b"] <- 2
+    if (dict.ContainsKey("a")) then printfn "a" 
+    printfn "%d %d" dict.Count dict.["a"]
     let prog =  (program+"$")
     printfn "%s" program
     let l = lexer (List.ofSeq prog) []
