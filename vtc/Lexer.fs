@@ -34,11 +34,11 @@ let rec lexer prog tokens =
     |'}' ->  lexer (tail prog) (TokenTypeEnum.Rbrace::tokens)
     |'<' ->
         match prog.[1] with
-            |'=' -> lexer (tail prog) (TokenTypeEnum.Leq::tokens)
+            |'=' -> lexer (tail (tail prog)) (TokenTypeEnum.Leq::tokens)
             | _ -> lexer (tail prog) (TokenTypeEnum.Ls::tokens)
     |'>' ->
         match prog.[1] with
-            |'=' -> lexer (tail prog) (TokenTypeEnum.Geq::tokens)
+            |'=' -> lexer (tail(tail prog)) (TokenTypeEnum.Geq::tokens)
             | _ -> lexer (tail prog) (TokenTypeEnum.Gt::tokens)
     |'=' ->
         match prog.[1] with

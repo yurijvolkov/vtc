@@ -9,14 +9,14 @@ type ASTnode =
     |Assignment of ASTnode*ASTnode  // ident * value
     |If of ASTnode*ASTnode*ASTnode  // condition * true_case * false_case
     |While of ASTnode*ASTnode       // condition * body
-    |Skip
+    |Skip                           
     |Print of ASTnode               // value
-    |Sequence of (ASTnode list)
+    |Sequence of (ASTnode list)     
     |Equal of ASTnode*ASTnode       // value == value
     |LessOrEq of ASTnode*ASTnode    // value <= value
     |Less of ASTnode*ASTnode        // value < value
-    |GreaterOrEq of ASTnode*ASTnode    // value >= value
-    |Greater of ASTnode*ASTnode        // value > value
+    |GreaterOrEq of ASTnode*ASTnode // value >= value
+    |Greater of ASTnode*ASTnode     // value > value
     |BinOp of ASTnode*ASTnode*int   // 0+ 1- 2* 3/
     
 /// expr := expr0 "<" expr | expr0 "<=" expr  | expr0 "==" expr  
@@ -85,15 +85,15 @@ let rec parseStatement lexems =
         match lexems with
         |Types.Lbrace::t -> 
             let  (seq, othrs) = parseStatements t []
-            (ASTnode.Sequence seq, tail othrs)
+            (ASTnode.Sequence seq, othrs)
         |(TokenTypeEnum.Ident s)::t ->
             let ident = ASTnode.Ident s
             let (value, othrs) = parseExpression (tail t)
-            ASTnode.Assignment  (ident, value), othrs
+            ASTnode.Assignment  (ident, value),  othrs
         |Types.If::t ->
             let (condition, othrs) = parseAtom t
-            let (t_stmnt, othrs) = parseStatement (tail othrs) 
-            let (f_stmnt, othrs) = parseStatement (tail (tail othrs)) 
+            let (t_stmnt, othrs) = parseStatement othrs
+            let (f_stmnt, othrs) = parseStatement (tail othrs) 
             ASTnode.If(condition,  t_stmnt,  f_stmnt), tail othrs
         |Types.While::t ->
             let (condition, othrs) = parseAtom t
@@ -110,6 +110,7 @@ and parseStatements lexems stmts =
     let (next, others) = parseStatement lexems 
     match others with
     |TokenTypeEnum.Semicolon::TokenTypeEnum.EOF::_ -> (next::stmts, others)
+    |TokenTypeEnum.Semicolon::TokenTypeEnum.Rbrace::t -> (next::stmts, t)
     |TokenTypeEnum.Semicolon::t -> (parseStatements t (next::stmts))
     |_ -> (next::stmts, others)
 

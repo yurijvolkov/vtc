@@ -15,3 +15,6 @@ C:\Users\yura2\Source\Repos\vtc\vtc\bin\Debug\FSharp.Core.dll
 C:\Users\yura2\Source\Repos\vtc\vtc\bin\Debug\ru\FSharp.Core.resources.dll
 C:\Users\yura2\Source\Repos\vtc\vtc\obj\Debug\vtc.exe
 C:\Users\yura2\Source\Repos\vtc\vtc\obj\Debug\vtc.pdb
+C:\Users\yura2\Source\Repos\vtc\vtc\bin\Debug\vm_fsharp.exe
+C:\Users\yura2\Source\Repos\vtc\vtc\bin\Debug\vm_fsharp.pdb
+C:\Users\yura2\Source\Repos\vtc\vtc\bin\Debug\vm_fsharp.xml

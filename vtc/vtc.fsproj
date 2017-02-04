@@ -61,7 +61,7 @@
     <Compile Include="Lexer.fs" />
     <Compile Include="Parser.fs" />
     <Content Include="Grammar.txt" />
-    <Compile Include="Printer.fs" />
+    <Compile Include="Codegen.fs" />
     <Compile Include="VTc.fs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +72,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
+    <Reference Include="vm_fsharp">
+      <HintPath>..\..\sysProgrammingProject\vm_fsharp\bin\Debug\vm_fsharp.exe</HintPath>
+    </Reference>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
