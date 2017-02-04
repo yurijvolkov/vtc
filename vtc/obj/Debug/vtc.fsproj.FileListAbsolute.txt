@@ -18,3 +18,4 @@ C:\Users\yura2\Source\Repos\vtc\vtc\obj\Debug\vtc.pdb
 C:\Users\yura2\Source\Repos\vtc\vtc\bin\Debug\vm_fsharp.exe
 C:\Users\yura2\Source\Repos\vtc\vtc\bin\Debug\vm_fsharp.pdb
 C:\Users\yura2\Source\Repos\vtc\vtc\bin\Debug\vm_fsharp.xml
+C:\Users\yura2\Source\Repos\vtc\vtc\obj\Debug\vtc.fsprojResolveAssemblyReference.cache

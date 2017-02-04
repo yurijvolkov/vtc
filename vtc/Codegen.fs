@@ -5,38 +5,49 @@ open Parser
 open Types
 open Commands
 
+type CodeElnmts = 
+    |Str of string
+    |Num of int
+    |Com of Commands
 
-let prog = new Collections.ArrayList()
 
-let genCode v =
-    prog.Add v |> ignore
+let prog = new Collections.Generic.List<CodeElnmts>()
+
+let genCodeS s =
+     prog.Add (CodeElnmts.Str s)
+
+let genCodeN num =
+    prog.Add (CodeElnmts.Num num)
+
+let genCodeC com =
+    prog.Add (CodeElnmts.Com com)
 
 let varDict = new Collections.Generic.Dictionary<string, int>()
 let addId id = 
          match varDict.ContainsKey(id) with
-        |true -> genCode (varDict.[id])
+        |true -> genCodeN varDict.[id]
         |false -> 
             varDict.[id] <- varDict.Count
-            genCode (varDict.[id])
+            genCodeN varDict.[id]
     
 let rec visit node  =
     match node with
     |ASTnode.Number num -> 
-        genCode Commands.LOAD
-        genCode num 
+        genCodeC Commands.LOAD
+        genCodeN  num 
     |ASTnode.Ident id -> 
-        genCode Commands.LOADVAR
+        genCodeC Commands.LOADVAR
         addId id
     |ASTnode.Assignment (ASTnode.Ident id, value) ->
         visit value 
-        genCode Commands.STOREVAR
+        genCodeC Commands.STOREVAR
         addId id
     |ASTnode.Sequence (h::t) ->
         visit h 
         visit (ASTnode.Sequence t) 
     |ASTnode.Print (value) ->
         visit value
-        genCode Commands.IPRINT
+        genCodeC Commands.IPRINT
     |ASTnode.Skip ->
         0 |> ignore
     |ASTnode.If (cond, t_case, f_case) ->
@@ -44,62 +55,62 @@ let rec visit node  =
         |ASTnode.LessOrEq (left, right) ->
             visit left
             visit right
-            genCode Commands.JLEI
+            genCodeC Commands.JLEI
         |ASTnode.Less (left, right) ->
             visit left
             visit right
-            genCode Commands.JLI
+            genCodeC Commands.JLI
         |ASTnode.GreaterOrEq (left, right) ->
             visit left
             visit right
-            genCode Commands.JMEI
+            genCodeC Commands.JMEI
         |ASTnode.Greater (left, right) ->
             visit left
             visit right
-            genCode Commands.JMI
-        genCode (int 0)
+            genCodeC Commands.JMI
+        genCodeN 0
         let f_pos = prog.Count
         visit f_case
-        genCode Commands.JA
-        genCode 0
+        genCodeC Commands.JA
+        genCodeN 0
         let t_pos = prog.Count
         visit t_case
-        prog.[f_pos-1] <- t_pos - f_pos
-        prog.[t_pos-1] <- (prog.Count - t_pos)
+        prog.[f_pos-1] <- CodeElnmts.Num( t_pos - f_pos )
+        prog.[t_pos-1] <- CodeElnmts.Num(prog.Count - t_pos)
     |ASTnode.While (cond, body) ->
         let start_pos = prog.Count
         match cond with
         |ASTnode.LessOrEq (left, right) ->
             visit left
             visit right
-            genCode Commands.JMI
+            genCodeC Commands.JMI
         |ASTnode.Less (left, right) ->
             visit left
             visit right
-            genCode Commands.JMEI
+            genCodeC Commands.JMEI
         |ASTnode.GreaterOrEq (left, right) ->
             visit left
             visit right
-            genCode Commands.JLI
+            genCodeC Commands.JLI
         |ASTnode.Greater (left, right) ->
             visit left
             visit right
-            genCode Commands.JLEI
-        genCode (int 0)
+            genCodeC Commands.JLEI
+        genCodeN 0
         let body_pos = prog.Count
         visit body
-        genCode Commands.JA
-        genCode 0
-        prog.[body_pos - 1] <- prog.Count - body_pos
-        prog.[prog.Count - 1] <- start_pos - prog.Count
+        genCodeC Commands.JA
+        genCodeN 0
+        prog.[body_pos - 1] <- CodeElnmts.Num(prog.Count - body_pos)
+        prog.[prog.Count - 1] <- CodeElnmts.Num (start_pos - prog.Count)
     |ASTnode.BinOp (left, right, op) ->
         visit left
         visit right
         match op with
-        |0 -> genCode Commands.IADD
-        |1 -> genCode Commands.ISUB
-        |2 -> genCode Commands.IMUL
-        |3 -> genCode Commands.IDIV
+        |0 -> genCodeC Commands.IADD
+        |1 -> genCodeC Commands.ISUB
+        |2 -> genCodeC Commands.IMUL
+        |3 -> genCodeC Commands.IDIV
     |ASTnode.Sequence [] -> 
         prog |> ignore
     
