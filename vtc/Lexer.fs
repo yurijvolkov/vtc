@@ -52,6 +52,7 @@ let rec lexer prog tokens =
             | "skip" -> lexer (snd(List.splitAt 4 prog)) (TokenTypeEnum.Skip::tokens)
             | "while" -> lexer (snd(List.splitAt 5 prog)) (TokenTypeEnum.While::tokens)
             | "print" -> lexer (snd(List.splitAt 5 prog)) (TokenTypeEnum.Print::tokens)
+            | "stop" -> lexer (snd(List.splitAt 5 prog)) (TokenTypeEnum.Stop::tokens)
             | s when (isDigit s.[0] <> true) -> lexer (snd(List.splitAt s.Length prog)) ((TokenTypeEnum.Ident s)::tokens)
             | s when (isNumber s=true) -> lexer (snd(List.splitAt s.Length prog)) ((TokenTypeEnum.Number (int s))::tokens)
 

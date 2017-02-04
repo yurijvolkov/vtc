@@ -9,7 +9,7 @@
 </member>
 <member name="M:Parser.parseStatement(Microsoft.FSharp.Collections.FSharpList{Types.TokenTypeEnum})">
 <summary>
- statement := &quot;{&quot; statements &quot;}&quot; | assignment | if | while | print | &quot;skip&quot;
+ statement := &quot;{&quot; statements &quot;}&quot; | assignment | if | while | print | &quot;skip&quot; | &quot;stop&quot;
  assignment := IDENT &quot;=&quot; expr
  if := &quot;if&quot; &quot;(&quot; expr &quot;)&quot; statement &quot;else&quot; statement
  while := &quot;while&quot; &quot;(&quot; expr &quot;)&quot; statement

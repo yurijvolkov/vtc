@@ -10,6 +10,7 @@ type ASTnode =
     |If of ASTnode*ASTnode*ASTnode  // condition * true_case * false_case
     |While of ASTnode*ASTnode       // condition * body
     |Skip                           
+    |Stop
     |Print of ASTnode               // value
     |Sequence of (ASTnode list)     
     |Equal of ASTnode*ASTnode       // value == value
@@ -76,7 +77,7 @@ and parseAtom lexems =
     |Types.Ident id::t->
         (ASTnode.Ident id, t) 
 
-/// statement := "{" statements "}" | assignment | if | while | print | "skip"
+/// statement := "{" statements "}" | assignment | if | while | print | "skip" | "stop"
 /// assignment := IDENT "=" expr
 /// if := "if" "(" expr ")" statement "else" statement
 /// while := "while" "(" expr ")" statement
@@ -104,13 +105,15 @@ let rec parseStatement lexems =
             ASTnode.Print(value), othrs
         |Types.Skip::t ->
             ASTnode.Skip, t
+        |Types.Stop::t ->
+            ASTnode.Stop, t
 
 /// statements := statement | statement ";" statements
 and parseStatements lexems stmts = 
     let (next, others) = parseStatement lexems 
     match others with
-    |TokenTypeEnum.Semicolon::TokenTypeEnum.EOF::_ -> (next::stmts, others)
-    |TokenTypeEnum.Semicolon::TokenTypeEnum.Rbrace::t -> (next::stmts, t)
+    |TokenTypeEnum.Semicolon::TokenTypeEnum.EOF::_ -> ( next::stmts, others)
+    |TokenTypeEnum.Semicolon::TokenTypeEnum.Rbrace::t -> (parseStatements t (next::stmts))
     |TokenTypeEnum.Semicolon::t -> (parseStatements t (next::stmts))
     |_ -> (next::stmts, others)
 

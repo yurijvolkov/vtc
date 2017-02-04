@@ -13,6 +13,7 @@ n=10;
 print n;
 x = 5;
 while (x > 0) {print x; x=x-1;}
+stop;
 "
 //else {
 //    if(z >= 2){
@@ -63,6 +64,7 @@ let rec makeExe (code : byte list) =
     bw.Write( int64 (List.length code) )
     bw.Write( List.toArray code )
     bw.Close()
+
 
 [<EntryPoint>]
 let main argv = 

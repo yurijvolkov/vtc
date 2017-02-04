@@ -50,6 +50,8 @@ let rec visit node  =
         genCodeC Commands.IPRINT
     |ASTnode.Skip ->
         0 |> ignore
+    |ASTnode.Stop ->
+        genCodeC Commands.STOP
     |ASTnode.If (cond, t_case, f_case) ->
         match cond with
         |ASTnode.LessOrEq (left, right) ->
@@ -101,8 +103,19 @@ let rec visit node  =
         visit body
         genCodeC Commands.JA
         genCodeN 0
-        prog.[body_pos - 1] <- CodeElnmts.Num(prog.Count - body_pos)
-        prog.[prog.Count - 1] <- CodeElnmts.Num (start_pos - prog.Count)
+        let l1 = (List.ofSeq (prog.GetRange(body_pos, prog.Count - body_pos)))
+        let l2 = (List.ofSeq (prog.GetRange(start_pos, prog.Count - start_pos)))
+        let offs1 = List.fold( fun o i -> match i with
+                        |CodeElnmts.Num _ -> o + 8
+                        |CodeElnmts.Com _ -> o + 1) 0 l1
+        let offs2 = List.fold( fun o i -> match i with
+                        |CodeElnmts.Num _ -> o + 8
+                        |CodeElnmts.Com _ -> o + 1) 0 l2
+        prog.[body_pos - 1] <- CodeElnmts.Num(offs1)
+        prog.[prog.Count - 1] <-  CodeElnmts.Num (offs2 * -1)
+        printfn "Range(%d) : %A\n" (List.length l1) l1
+        printfn "Range(%d) : %A\n" (List.length l2) l2
+        
     |ASTnode.BinOp (left, right, op) ->
         visit left
         visit right

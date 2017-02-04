@@ -1,7 +1,7 @@
 ﻿ 
 statements := statement | statement ";" statements 
 
-statement := "{" statements "}" | assignment | if | while | print | "skip"
+statement := "{" statements "}" | assignment | if | while | print | "skip" | "stop"
 print := "print" "(" expr ")"
 assignment := IDENT "=" expr
 if := "if" "(" expr ")" statement "else" statement

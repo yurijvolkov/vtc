@@ -23,6 +23,7 @@ type TokenTypeEnum =
     | Skip
     | While
     | Print
+    | Stop
     | Ident of string
     
 
