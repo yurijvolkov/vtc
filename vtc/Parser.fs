@@ -112,8 +112,6 @@ let rec parseStatement lexems =
 and parseStatements lexems stmts = 
     let (next, others) = parseStatement lexems 
     match others with
-    |TokenTypeEnum.Semicolon::TokenTypeEnum.EOF::_ -> ( next::stmts, others)
-    |TokenTypeEnum.Semicolon::TokenTypeEnum.Rbrace::t -> (parseStatements t (next::stmts))
     |TokenTypeEnum.Semicolon::t -> (parseStatements t (next::stmts))
     |_ -> (next::stmts, others)
 
