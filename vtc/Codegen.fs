@@ -68,49 +68,72 @@ let rec visit node  =
     |ASTnode.If (cond, t_case, f_case) ->
         match cond with
         |ASTnode.LessOrEq (left, right) ->
-            visit left
             visit right
+            visit left
             genCodeC Commands.JLEI
         |ASTnode.Less (left, right) ->
-            visit left
             visit right
-            genCodeC Commands.JMEI
+            visit left
+            genCodeC Commands.JLI
         |ASTnode.GreaterOrEq (left, right) ->
-            visit left
             visit right
+            visit left
             genCodeC Commands.JMEI
         |ASTnode.Greater (left, right) ->
-            visit left
             visit right
+            visit left
             genCodeC Commands.JMI
+        |ASTnode.Equal (left, right) ->
+            visit right
+            visit left
+            genCodeC Commands.ISUB
+            genCodeC Commands.JZI
         genCodeN 0
         let f_pos = prog.Count
         visit f_case
         genCodeC Commands.JA
         genCodeN 0
+        
         let t_pos = prog.Count
         visit t_case
-        prog.[f_pos-1] <- CodeElnmts.Num( t_pos - f_pos )
-        prog.[t_pos-1] <- CodeElnmts.Num(prog.Count - t_pos)
+        
+        
+        let l1 = (List.ofSeq (prog.GetRange(f_pos, t_pos - f_pos)))
+        let l2 = (List.ofSeq (prog.GetRange(t_pos, prog.Count - t_pos)))
+        let offs1 = List.fold( fun o i -> match i with
+                        |CodeElnmts.Num _ -> o + 8
+                        |CodeElnmts.Com _ -> o + 1) 0 l1
+        let offs2 = List.fold( fun o i -> match i with
+                        |CodeElnmts.Num _ -> o + 8
+                        |CodeElnmts.Com _ -> o + 1) 0 l2
+        
+        
+        prog.[f_pos-1] <- CodeElnmts.Num( offs1 )
+        prog.[t_pos-1] <- CodeElnmts.Num( offs2 )
     |ASTnode.While (cond, body) ->
         let start_pos = prog.Count
         match cond with
         |ASTnode.LessOrEq (left, right) ->
-            visit left
             visit right
+            visit left
             genCodeC Commands.JMI
         |ASTnode.Less (left, right) ->
-            visit left
             visit right
+            visit left
             genCodeC Commands.JMEI
         |ASTnode.GreaterOrEq (left, right) ->
-            visit left
             visit right
-            genCodeC Commands.JMEI
+            visit left
+            genCodeC Commands.JLI
         |ASTnode.Greater (left, right) ->
-            visit left
             visit right
+            visit left
             genCodeC Commands.JLEI
+        |ASTnode.Equal (left, right) ->
+            visit right
+            visit left
+            genCodeC Commands.ISUB
+            genCodeC Commands.JNZI
         genCodeN 0
         let body_pos = prog.Count
         visit body

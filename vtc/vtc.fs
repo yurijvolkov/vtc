@@ -9,36 +9,17 @@ open Parser
 open Codegen
 open Commands
 let program = "
-    n = 10;
-    s = '\n';
-    print n;
-    prints s;
-    x = 5;
-    while (x < 10) {
-        print x ;
-        x=x+1 ;
-        prints s 
+    header = 'Numbers from [1;100] that divides by 13:\n';
+    prints header;
+    nl = '\n';
+    x = 1;
+    while(x<100) {
+        if( x/13 - (x-1)/13 > 0) {print x; prints nl}
+        else skip;
+        x = x+1
     };
     stop
 "
-//else {
-//    if(z >= 2){
-//     print 2;
-//     print x;
-//     }
-//     else {print 3;}
-//}
-
-
-//x=x+2;
-//x= 1;
-//while (n> 0 ) {
-//    y = y + x;
-//    if (x ==0) { y = 10 } else skip;
-//    print(x        );
-//    print(y);
-//    n =n-2;
-//}
 
 let rec makeByteCode compiled code = 
     match  compiled with
@@ -83,7 +64,7 @@ let main argv =
     let l = lexer (List.ofSeq prog) []
     printfn "%A\n" (List.rev l) 
     let ast = parseStatements (List.rev l) []
-    printfn "%A\n" (List.rev (fst ast)) 
+    printfn "%A\n"  (fst ast) 
  //   printfn "%A" Codegen.prog
     visit (ASTnode.Sequence (fst ast)) 
     let compiled = Codegen.prog

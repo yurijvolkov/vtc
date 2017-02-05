@@ -38,10 +38,10 @@ let rec parseExpression lexems =
         ASTnode.Equal(left, right), othrs
     | TokenTypeEnum.Gt::t ->
         let(right, othrs) = parseExpression t
-        ASTnode.GreaterOrEq(left, right), othrs
+        ASTnode.Greater(left, right), othrs
     | TokenTypeEnum.Geq::t->
         let(right, othrs) = parseExpression t 
-        ASTnode.Greater(left, right), othrs
+        ASTnode.GreaterOrEq(left, right), othrs
     | _ -> left, othrs
     
 /// expr0 = expr1 "+" expr0 | expr1 "-" expr0 | expr1
@@ -99,7 +99,7 @@ let rec parseStatement lexems =
             let (condition, othrs) = parseAtom t
             let (t_stmnt, othrs) = parseStatement othrs
             let (f_stmnt, othrs) = parseStatement (tail othrs) 
-            ASTnode.If(condition,  t_stmnt,  f_stmnt), tail othrs
+            ASTnode.If(condition,  t_stmnt,  f_stmnt), othrs
         |Types.While::t ->
             let (condition, othrs) = parseAtom t
             let (body, othrs) = parseStatement othrs 
