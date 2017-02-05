@@ -2,6 +2,7 @@
 
 type TokenTypeEnum = 
     | Number of int
+    | String of string
     | Semicolon
     | Plus 
     | Minus
@@ -23,6 +24,7 @@ type TokenTypeEnum =
     | Skip
     | While
     | Print
+    | Prints
     | Stop
     | Ident of string
     

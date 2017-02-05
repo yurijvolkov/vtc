@@ -8,13 +8,16 @@ open Types
 open Parser
 open Codegen
 open Commands
-let program = @"
+let program = "
     n = 10;
+    s = '\n';
     print n;
+    prints s;
     x = 5;
-    while (x > 0) {
-        print x;
-        x=x-1
+    while (x < 10) {
+        print x ;
+        x=x+1 ;
+        prints s 
     };
     stop
 "
@@ -43,16 +46,19 @@ let rec makeByteCode compiled code =
     |(CodeElnmts.Num num)::t -> makeByteCode t (List.rev( Array.toList( BitConverter.GetBytes (int64 num)))@code)
     |[] -> code
 
-let rec makeExe (code : byte list) = 
-    use fs = new FileStream("test.vtc", FileMode.Create)
+
+
+let rec makeExe (code : byte list) (strPool : Collections.Generic.Dictionary<string, int>) = 
+    use fs = new FileStream(@"C:\Users\yura2\Source\Repos\sysProgrammingProject\vm_fsharp\bin\Debug\tests\test.vtc", FileMode.Create)
     use bw = new BinaryWriter(fs)
     bw.Write( [|0xbauy;0xbauy|])
     bw.Write( int64 1)
     let funOffset = fs.Position
     bw.Write( int64 0)
-    bw.Write( int64 1)
-    bw.Write( Encoding.ASCII.GetBytes("main") )
-    bw.Write( 0uy )
+    bw.Write( int64 (strPool.Count))
+    for i in strPool do
+        bw.Write( Encoding.ASCII.GetBytes(i.Key) )
+        bw.Write( 0uy )
     
     let curPos = fs.Position
     fs.Seek(funOffset, SeekOrigin.Begin)
@@ -60,8 +66,8 @@ let rec makeExe (code : byte list) =
     fs.Seek(curPos, SeekOrigin.Begin)
 
     bw.Write( int64 1 )
-    bw.Write( int64 0 )
-    bw.Write( int64 2 )
+    bw.Write(int64 strPool.["main"] )
+    bw.Write(int64 varDict.Count )
     bw.Write( int64 0 )
     bw.Write( int64 0 )
     bw.Write( int64 (List.length code) )
@@ -84,5 +90,6 @@ let main argv =
     printfn "%A\n" (List.ofSeq compiled) 
     let byteCode = (List.rev (makeByteCode (List.ofSeq compiled) []))
     printfn "%A" byteCode
-    makeExe byteCode
+    strDict.["main"] <- strDict.Count
+    makeExe byteCode strDict
     0

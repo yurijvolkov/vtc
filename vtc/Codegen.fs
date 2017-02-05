@@ -29,6 +29,13 @@ let addId id =
         |false -> 
             varDict.[id] <- varDict.Count
             genCodeN varDict.[id]
+let strDict = new Collections.Generic.Dictionary<string, int>()
+let addStr str = 
+        match strDict.ContainsKey(str) with
+        |true -> genCodeN strDict.[str]
+        |false ->
+            strDict.[str] <- strDict.Count
+            genCodeN strDict.[str]
     
 let rec visit node  =
     match node with
@@ -38,6 +45,9 @@ let rec visit node  =
     |ASTnode.Ident id -> 
         genCodeC Commands.LOADVAR
         addId id
+    |ASTnode.String (str) ->
+        genCodeC Commands.LOADS
+        addStr str
     |ASTnode.Assignment (ASTnode.Ident id, value) ->
         visit value 
         genCodeC Commands.STOREVAR
@@ -48,6 +58,9 @@ let rec visit node  =
     |ASTnode.Print (value) ->
         visit value
         genCodeC Commands.IPRINT
+    |ASTnode.PrintS (value) ->
+        visit value
+        genCodeC Commands.SPRINT
     |ASTnode.Skip ->
         0 |> ignore
     |ASTnode.Stop ->
@@ -117,8 +130,8 @@ let rec visit node  =
         printfn "Range(%d) : %A\n" (List.length l2) l2
         
     |ASTnode.BinOp (left, right, op) ->
-        visit left
         visit right
+        visit left
         match op with
         |0 -> genCodeC Commands.IADD
         |1 -> genCodeC Commands.ISUB

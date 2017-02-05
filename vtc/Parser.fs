@@ -6,12 +6,14 @@ open Types
 type ASTnode =
     |Number of int
     |Ident of string
+    |String of string
     |Assignment of ASTnode*ASTnode  // ident * value
     |If of ASTnode*ASTnode*ASTnode  // condition * true_case * false_case
     |While of ASTnode*ASTnode       // condition * body
     |Skip                           
     |Stop
     |Print of ASTnode               // value
+    |PrintS of ASTnode              // value
     |Sequence of (ASTnode list)     
     |Equal of ASTnode*ASTnode       // value == value
     |LessOrEq of ASTnode*ASTnode    // value <= value
@@ -66,7 +68,7 @@ and parseExpression1 lexems =
         ASTnode.BinOp ( left, right, 3), othrs
     | _ -> left, othrs
 
-/// atom := "(" expr ")" | NUMBER | IDENT
+/// atom := "(" expr ")" | NUMBER | IDENT | STRING
 and parseAtom lexems =
     match lexems with
     |Types.Lpar::t -> 
@@ -76,6 +78,8 @@ and parseAtom lexems =
         (ASTnode.Number num, t)
     |Types.Ident id::t->
         (ASTnode.Ident id, t) 
+    |Types.String str::t ->
+        (ASTnode.String str, t)
 
 /// statement := "{" statements "}" | assignment | if | while | print | "skip" | "stop"
 /// assignment := IDENT "=" expr
@@ -103,6 +107,9 @@ let rec parseStatement lexems =
         |Types.Print::t ->
             let (value, othrs) = parseAtom t
             ASTnode.Print(value), othrs
+        |Types.Prints::t ->
+            let (value, othrs) = parseAtom t
+            ASTnode.PrintS(value), othrs
         |Types.Skip::t ->
             ASTnode.Skip, t
         |Types.Stop::t ->

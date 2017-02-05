@@ -18,7 +18,7 @@
 </member>
 <member name="M:Parser.parseAtom(Microsoft.FSharp.Collections.FSharpList{Types.TokenTypeEnum})">
 <summary>
- atom := &quot;(&quot; expr &quot;)&quot; | NUMBER | IDENT
+ atom := &quot;(&quot; expr &quot;)&quot; | NUMBER | IDENT | STRING
 </summary>
 </member>
 <member name="M:Parser.parseExpression1(Microsoft.FSharp.Collections.FSharpList{Types.TokenTypeEnum})">
