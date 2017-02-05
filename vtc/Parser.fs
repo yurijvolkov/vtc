@@ -86,7 +86,7 @@ let rec parseStatement lexems =
         match lexems with
         |Types.Lbrace::t -> 
             let  (seq, othrs) = parseStatements t []
-            (ASTnode.Sequence seq, othrs)
+            (ASTnode.Sequence seq, tail othrs)
         |(TokenTypeEnum.Ident s)::t ->
             let ident = ASTnode.Ident s
             let (value, othrs) = parseExpression (tail t)
@@ -113,6 +113,6 @@ and parseStatements lexems stmts =
     let (next, others) = parseStatement lexems 
     match others with
     |TokenTypeEnum.Semicolon::t -> (parseStatements t (next::stmts))
-    |_ -> (next::stmts, others)
+    |_ -> (List.rev(next::stmts), others)
 
 

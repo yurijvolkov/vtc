@@ -61,7 +61,7 @@ let rec visit node  =
         |ASTnode.Less (left, right) ->
             visit left
             visit right
-            genCodeC Commands.JLI
+            genCodeC Commands.JMEI
         |ASTnode.GreaterOrEq (left, right) ->
             visit left
             visit right
@@ -93,7 +93,7 @@ let rec visit node  =
         |ASTnode.GreaterOrEq (left, right) ->
             visit left
             visit right
-            genCodeC Commands.JLI
+            genCodeC Commands.JMEI
         |ASTnode.Greater (left, right) ->
             visit left
             visit right

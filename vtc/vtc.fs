@@ -9,7 +9,6 @@ open Parser
 open Codegen
 open Commands
 let program = @"
-{
     n = 10;
     print n;
     x = 5;
@@ -18,7 +17,6 @@ let program = @"
         x=x-1
     };
     stop
-}
 "
 //else {
 //    if(z >= 2){
@@ -81,7 +79,7 @@ let main argv =
     let ast = parseStatements (List.rev l) []
     printfn "%A\n" (List.rev (fst ast)) 
  //   printfn "%A" Codegen.prog
-    visit (ASTnode.Sequence(List.rev (fst ast))) 
+    visit (ASTnode.Sequence (fst ast)) 
     let compiled = Codegen.prog
     printfn "%A\n" (List.ofSeq compiled) 
     let byteCode = (List.rev (makeByteCode (List.ofSeq compiled) []))
